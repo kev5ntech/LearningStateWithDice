@@ -8,15 +8,39 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var numberOfPips: Int = 4
+    @State private var numberOfDice: Int = 1
+
     var body: some View {
-        Image(systemName: "die.face.\(numberOfPips)")
-            .resizable()
-            .frame(width: 100, height: 100)
-        
-        Button("Roll") {
-            numberOfPips = Int.random(in: 1...6)
+        VStack {
+            Text("Dice Roller")
+                .font(.largeTitle
+                    .lowercaseSmallCaps()
+                    
+                )
+                .foregroundStyle(.white)
+            HStack {
+                ForEach(1...numberOfDice, id: \.description) { _ in
+                                DiceView()
+                            }
+            }
+            HStack {
+                Button("Remove Dice", systemImage: "minus.circle.fill") {
+                    withAnimation {
+                        numberOfDice-=1
+                    }
+                }.disabled(numberOfDice == 1)
+                Button("Add Dice", systemImage: "plus.circle.fill") {
+                    withAnimation {
+                        numberOfDice+=1
+                    }
+                }.disabled(numberOfDice == 5)
+            }.padding()
+            .labelStyle(.iconOnly)
+            .font(.title)
         }
+        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
+        .background(.mainBlue)
+        .tint(.white)
     }
 }
 
